@@ -178,3 +178,57 @@ DEFINISI LAIN :
 Closures can remember the outer function scope even after creation time.
 
 Disini lah kita butuh mempelajari Lexical Environment
+
+
+==============================
+LEXICAL ENVIRONMENT
+
+DEFINISI CHAT GPT : Lexical Environment adalah tempat (lingkungan) di mana suatu fungsi dideklarasikan, bukan di mana dia dipanggil.
+
+Setiap kali fungsi dibuat:
+JavaScript bikin Lexical Environment untuk fungsi itu.
+
+Lingkungan ini berisi:
+
+    1. Variabel lokal fungsi.
+
+    2. Referensi ke lingkungan luar (outer environment) — kayak rantai.
+
+Contoh Kode :
+
+function outer() {
+    let name = "Dicky";
+
+    function inner() {
+        console.log(name); // <-- akses variabel dari lingkungan luar
+    }
+
+    return inner;
+}
+
+const sayHello = outer();
+sayHello(); // Output: "Dicky"
+
+Penjelasan langkah demi langkah:
+    1. outer() dipanggil → variabel name = "Dicky" disimpan di Lexical Environment milik outer.
+
+    2. inner didefinisikan di dalam outer, jadi dia “terhubung” dengan lingkungan outer.
+
+    3. Saat outer() selesai dan return inner, nilai name tetap hidup karena inner() masih butuh akses ke name.
+
+    4. Saat sayHello() dipanggil, ia log "Dicky" karena dia masih punya akses ke Lexical Environment di mana dia diciptakan.
+
+
+
+Closure = Fungsi + Lexical Environment-nya
+Closure terjadi saat:
+    -. Fungsi didefinisikan di dalam fungsi lain.
+
+    -. Fungsi itu mengakses variabel dari luar dirinya.
+
+    -. Fungsi itu dieksekusi setelah fungsi luar selesai.
+
+Source : 
+1. https://javascript.info/closure#lexical-environment
+2. https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Closures
+3. https://www.youtube.com/watch?v=aHrvi2zTlaU
