@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Closure - Playground Interaktif Level Up</title>
+    <link rel="stylesheet" href="../assets/style.css" />
+    <style>
+      #closureCode {
+        background: #f0f0f0;
+        padding: 20px;
+        border-radius: 10px;
+        margin-top: 40px;
+        font-family: monospace;
+        white-space: pre-wrap;
+      }
+      #closureCode strong {
+        color: #2e7d32;
+      }
+      #codeInput {
+        width: 100%;
+        height: 150px;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        font-family: monospace;
+        margin-top: 20px;
+      }
+      #executeBtn {
+        padding: 10px 20px;
+        margin-top: 10px;
+        background-color: #4caf50;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+      #executeBtn:hover {
+        background-color: #45a049;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Closure</h1>
+
+    <p>
+      <strong>Closure</strong> adalah fungsi yang mengingat variabel dari
+      lingkungan saat fungsi itu dibuat, bahkan setelah fungsi luar selesai
+      dijalankan.
+    </p>
+
+    <h2>Analogi Kehidupan Sehari-hari:</h2>
+    <p>
+      Mesin penjual otomatis yang mengingat daftar harga dan stok barang
+      walaupun pembuat mesinnya sudah tidak ada.
+    </p>
+
+    <h2>Simulasi Interaktif:</h2>
+
+    <div id="playground">
+      <select id="itemSelect">
+        <!-- Opsi akan diisi lewat JavaScript -->
+      </select>
+      <button onclick="buyItem()">Beli Barang</button>
+      <pre id="output"></pre>
+
+      <h3>Stok Barang:</h3>
+      <ul id="stockList">
+        <!-- Daftar stok barang -->
+      </ul>
+    </div>
+
+    <h2>Kode Closure:</h2>
+    <div id="closureCode">
+      <code>
+        function createVendingMachine() { const items = { Coklat: { price:
+        10000, stock: 5 }, Minuman: { price: 8000, stock: 3 }, Keripik: { price:
+        12000, stock: 4 }, }; return {
+        <strong>getItems: function () { return items; },</strong>
+        <strong
+          >buy: function (itemName) { items[itemName].stock--; return ...
+          }</strong
+        >
+        }; const vendingMachine = createVendingMachine(); }
+      </code>
+    </div>
+
+    <p>
+      <em
+        ><strong>Penjelasan:</strong> Fungsi <code>getItems</code> dan
+        <code>buy</code> mengakses <code>items</code> walaupun
+        <code>createVendingMachine</code> sudah selesai dieksekusi. Ini lah
+        <strong>closure</strong> di JavaScript!
+      </em>
+    </p>
+
+    <h2>Input Kode JavaScript Anda:</h2>
+    <textarea
+      id="codeInput"
+      placeholder="Tulis kode JavaScript Anda di sini..."
+    ></textarea>
+    <button id="executeBtn" onclick="executeCode()">Execute</button>
+
+    <h3>Output Eksekusi:</h3>
+    <pre id="executionOutput"></pre>
+
+    <script>
+      function createVendingMachine() {
+        const items = {
+          Coklat: { price: 10000, stock: 5 },
+          Minuman: { price: 8000, stock: 3 },
+          Keripik: { price: 12000, stock: 4 },
+        };
+
+        return {
+          getItems: function () {
+            return items;
+          },
+          buy: function (itemName) {
+            if (!items[itemName]) {
+              return "Barang tidak tersedia.";
+            }
+            if (items[itemName].stock <= 0) {
+              return itemName + " sudah habis!";
+            }
+            items[itemName].stock--;
+            return `Anda membeli ${itemName} seharga Rp${items[itemName].price}. Sisa stok: ${items[itemName].stock}`;
+          },
+        };
+      }
+
+      const vendingMachine = createVendingMachine();
+
+      function populateItemSelect() {
+        const itemSelect = document.getElementById("itemSelect");
+        const items = vendingMachine.getItems();
+        for (const itemName in items) {
+          const option = document.createElement("option");
+          option.value = itemName;
+          option.textContent = itemName;
+          itemSelect.appendChild(option);
+        }
+      }
+
+      function updateStockList() {
+        const stockList = document.getElementById("stockList");
+        const items = vendingMachine.getItems();
+        stockList.innerHTML = "";
+        for (const itemName in items) {
+          const li = document.createElement("li");
+          li.textContent = `${itemName} - Rp${items[itemName].price} (Stok: ${items[itemName].stock})`;
+          stockList.appendChild(li);
+        }
+      }
+
+      function buyItem() {
+        const selectedItem = document.getElementById("itemSelect").value;
+        const result = vendingMachine.buy(selectedItem);
+        const output = document.getElementById("output");
+        output.textContent += result + "\n";
+        updateStockList();
+      }
+
+      function executeCode() {
+        const userCode = document.getElementById("codeInput").value;
+        const outputElement = document.getElementById("executionOutput");
+
+        try {
+          const result = eval(userCode);
+          outputElement.textContent = "Output: " + result;
+        } catch (error) {
+          outputElement.textContent = "Error: " + error.message;
+        }
+      }
+
+      populateItemSelect();
+      updateStockList();
+    </script>
+  </body>
+</html>

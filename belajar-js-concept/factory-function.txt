@@ -1,0 +1,76 @@
+FACTORY FUNCTION 
+=================
+CONTOH :
+function factory(){
+    return {
+        ....
+    }
+}
+
+DEFINISI : FUNGSI YANG MEMBUAT OBJECT DAN MENGEMBALIKAN NILAI OBJECT NYA
+
+DEFINISI CHAT GPT :Factory function adalah fungsi biasa yang mengembalikan (return) objek baru. Jadi seperti pabrik yang "mencetak" objek berdasarkan parameter yang kamu berikan.
+
+===================
+KENAPA TIDAK MENGGUNAKAN OBJECT BIASA SAJA?
+const obj = {...}
+
+1. HARUS MEMBUATNYA BERULANG-ULANG (Duplikasi) JIKA INGIN MEMBUAT BANYAK FUNGSI (exp : OBJECT OF FAMILY MEMBER)
+const obj1 = {...}
+const obj2 = {...}
+const obj3 = {...}
+const obj4 = {...}
+const obj5 = {...}
+const obj6 = {...}
+const obj7 = {...}
+
+CONTOH :
+const me = {
+    talk(){
+        return `Hello i am Dicky`
+    }
+}
+const risky = {
+    talk(){
+        return `Hello i am Risky`
+    }
+}
+
+BETTER VERSION :
+const me = {
+    name : "Dicky"
+    talk(){
+        return `Hello i am ${this.name}`
+    }
+}
+const risky = {
+    name : "Risky"
+    talk(){
+        return `Hello i am ${this.name}`
+    }
+}
+
+Note : this. disini merujuk pada object nya
+
+SEKARANG KITA BISA JALANKAN :
+me.talk()
+risky.talk()
+
+2. DATA PRIVACY
+Disini kita langsung mengganti name dan dijalankan di method talk()
+Jadi secara tidak langsung kita membuat nya menjadi tidak secure atau tidak private
+
+Misal :
+me.talk() -> Hello i am Dicky
+
+Ketika :
+me.name = "Ucup"
+
+Maka :
+me.talk() -> Hello i am Ucup
+
+Disini terbukti bahwa properti name terekspose keluar dan tidak disimpan dengan baik (no privacy)
+
+coba lihat di console dan ketikan me, maka akan muncul semua properti dan method nya
+
+Jadi kesimpulannya disini kita mendapat 2 masalah besar, yaitu pembuatan logic fungsi secara berulang-ulang dan juga data privacy yang tidak aman karena kita masih bisa akses di dalam object
