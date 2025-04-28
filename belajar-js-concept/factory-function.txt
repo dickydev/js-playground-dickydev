@@ -74,3 +74,34 @@ Disini terbukti bahwa properti name terekspose keluar dan tidak disimpan dengan 
 coba lihat di console dan ketikan me, maka akan muncul semua properti dan method nya
 
 Jadi kesimpulannya disini kita mendapat 2 masalah besar, yaitu pembuatan logic fungsi secara berulang-ulang dan juga data privacy yang tidak aman karena kita masih bisa akses di dalam object
+
+DISINI LAH KITA MENGGUNAKAN FACTORY FUNCTION :
+
+Versi dengan name :
+function personFactory(name){
+    return {
+        name,
+        talk(){
+            return `Hello i am ${name} `
+        }
+    }
+}
+
+Versi tanpa name (Closure concept):
+function personFactory(name){
+    return {
+        talk(){
+            return `Hello i am ${name} `
+        }
+    }
+}
+
+Langsung aja kita test :
+const me = personFactory("Dicky")
+const risky = personFactory("Risky")
+
+Sekarang hasilnya sama dari yang object, namun ketika menggunakan factory function kita lebih terstruktur dan privacy data aman jika kita mengerti konsep closure, dimana kita bisa saja tidak menggunakan name properti karena function memiliki yang nama nya lexical environment yang erat hubungannya dengan closure
+
+jika kita menggunakan yang dengan name properti, sebetulnya disitu kita bisa banyak belajar tentang Closure dan lexical environment dimana fungsi bisa mengingat variabelnya di dalam inner function dan mengembalikannya keluar outer function 
+
+KITA BAHAS KONSEP NYA DI MATERI CLOSURE DAN LEXICAL ENVIRONMENT
