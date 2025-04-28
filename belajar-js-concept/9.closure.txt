@@ -1,0 +1,180 @@
+CLOSURE
+==========
+DEFINISI MDN DOCS : A closure is the combination of a function bundled together (enclosed) with references to its surrounding state (the lexical environment). In other words, a closure gives a function access to its outer scope. In JavaScript, closures are created every time a function is created, at function creation time.
+
+DEFINISI DARI CHAT GPT :
+Closure adalah fungsi yang bisa mengakses variabel dari scope luar, meskipun scope itu sudah selesai dieksekusi.
+
+Dengan kata lain:
+
+Fungsi “mengingat” di mana dia dibuat dan tetap punya akses ke variabel di sana.
+
+CONTOH :
+function outer(){
+    function inner(){
+
+    }
+}
+
+=========================
+BASIC NON PRACTICAL :
+function human(){
+    const name = "Dicky"
+    function sayHi(){
+        console.log(`Hi i am ${name}`)
+    }
+
+    sayHi();
+}
+
+human()
+
+Hasil nya : Hi i am Dicky
+
+===========================
+
+FUNCTION STATIS VARIABEL:
+function human(){
+    const name = "Dicky"
+    function sayHi(){
+        console.log(`Hi i am ${name}`)
+    }
+    function sayHowYouFeel(){
+        console.log(`${name} is feeling good`)
+    }
+
+    sayHi();
+    sayHowYouFeel();
+}
+
+human()
+Hasil nya : 
+Hi i am Dicky
+Dicky is feeling good
+
+Jadi sekarang kita punya 2 inner function yang melakukan sharing name ke dalam 2 fungsi tersebut (karena inner function bisa punya akses ke outer function makanya kita bisa ambil variabel diluar inner function). Jadi disini kita tidak perlu membuat properti name lagi jadi semua bisa langsung akses outer variabel nya
+
+========================
+FUNCTION DYNAMIC VARIABEL
+
+function human(n){
+    const name = n
+    function sayHi(){
+        console.log(`Hi i am ${name}`)
+    }
+    function sayHowYouFeel(){
+        console.log(`${name} is feeling good`)
+    }
+
+    sayHi();
+    sayHowYouFeel();
+}
+
+human("Dicky")
+
+Hasil nya : 
+Hi i am Dicky
+Dicky is feeling good
+
+BETTER VERSION :
+FUNCTION DYNAMIC VARIABEL
+
+function human(name){
+    function sayHi(){
+        console.log(`Hi i am ${name}`)
+    }
+    function sayHowYouFeel(){
+        console.log(`${name} is feeling good`)
+    }
+
+    sayHi();
+    sayHowYouFeel();
+}
+
+human("Dicky")
+
+Hasil nya : 
+Hi i am Dicky
+Dicky is feeling good
+
+Dari konsep diatas, hasilnya semua sama, dan disini kita bisa menggunakan dynamic variabel. 
+
+kita juga bisa setor datanya ke dalam variabel seperti berikut ini:
+
+
+function human(name){
+    function sayHi(){
+        console.log(`Hi i am ${name}`)
+    }
+    function sayHowYouFeel(){
+        console.log(`${name} is feeling good`)
+    }
+
+    sayHi();
+    sayHowYouFeel();
+}
+
+const dicky = human("Dicky")
+const risky = human("Risky")
+
+Hasil nya : 
+
+Hi i am Dicky
+Dicky is feeling good
+
+Hi i am Risky
+Risky is feeling good
+
+
+Sebetulnya disini kita bisa saja tanpa menggunakan outer function dan langsung menaruhnya di dallam global scope seperti berikut ini:
+
+const name = "Dicky"
+
+function sayHi(){
+    console.log(`Hi i am ${name}`)
+}
+function sayHowYouFeel(){
+    console.log(`${name} is feeling good`)
+}
+
+sayHi();
+sayHowYouFeel();
+
+namun masalahnya adalah saya tidak bisa menggunakan nya berulang kali dan hanya bisa menggunakannya untuk 1 nama variabel saja
+
+
+=======================
+PRACTICAL CONCEPT (Disini prinsipnya adalah kita melakukan penguncian terhadap nilai variabel dan akhirnya kita bisa menggunakannya di saat kita butuh untuk menggunakannya):
+
+function human(n){
+    const name = n
+    function sayHi(){
+        console.log(`Hi i am ${name}`)
+    }
+    function sayHowYouFeel(){
+        console.log(`${name} is feeling good`)
+    }
+    return{
+        sayHi,
+        sayHowYouFeel
+    }
+}
+
+const dicky = human("Dicky")
+
+dicky.sayHi()
+Hasil nya : 
+
+Hi i am Dicky
+
+dicky.sayHowYouFeel()
+Hasil nya :
+
+Dicky is feeling good
+
+Disini kita menggunakan factory function, nah disini ketika kita menggunakan yang factory function dimana kita return object keluar, sebetulnya kita sudah melakukan eksekusi terhadap kode fungsi human(), namun method sayHi dan sayHowYouFeel tetap mengunci nilai variabel name dengan menggunakan prinsip closure dan disini kita sudah bisa menggunakannya nanti ketika kita butuh menggunakan fungsi tersebut
+
+DEFINISI LAIN :
+Closures can remember the outer function scope even after creation time.
+
+Disini lah kita butuh mempelajari Lexical Environment
